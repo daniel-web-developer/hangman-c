@@ -69,17 +69,38 @@ char guessChar(const char *guessedLetters) {
 
 void drawGui(const char *answer, const char *guessed, int index, int chances) {
 
-    int drawDummy = 5 - chances;
+    char dummy5[] = " O";
+    char dummy4[] = " O\n |";
+    char dummy3[] = " O\n/|";
+    char dummy2[] = " O\n/|\\";
+    char dummy1[] = " O\n/|\\\n/";
+    char dummy0[] = " O\n/|\\\n/ \\";
 
     printf("\n\n");
-    printf("Chances left: %d\n", chances);
-    printf("Word: %s ", answer);
+
+    printf("Word: %s", answer);
 
     if (index > 0) {
         printf("Letters guessed: ");
         for (int i = 0; i < index; i++) {
             printf("%c", guessed[i]);
         }
+    }
+
+    printf("\n\nChances left: %d\n", chances);
+
+    if (chances == 5) {
+        printf("%s", dummy5);
+    } else if (chances == 4) {
+        printf("%s", dummy4);
+    } else if (chances == 3) {
+        printf("%s", dummy3);
+    } else if (chances == 2) {
+        printf("%s", dummy2);
+    } else if (chances == 1) {
+        printf("%s", dummy1);
+    } else if (chances == 0) {
+        printf("%s", dummy0);
     }
 
     printf("\n\n");
@@ -95,20 +116,27 @@ int game() {
     char guess;
     char answer[length];
     int right = 0;
+    int win = 0;
 
-    int chances = 5;
+    int chances = 6;
 
     for (int i = 0; i < length; i++) {
-        answer[i] = '_';
+        if (word[i] == '-') {
+            answer[i] == '-';
+        } else {
+            answer[i] = '_';
+        }
     }
+
+    answer[length] = '\0';
 
     if (word[1] == '-') {
         answer[1] = '-';
     }
 
-    printf("%s\n", word);
+    printf("answer: %s\n", word);
 
-    while (chances > 0) {
+    while (chances > 0 || win != 1) {
 
         drawGui(answer, guessedLetters, indexGuessedLetters, chances);
 
@@ -128,11 +156,24 @@ int game() {
         }
 
         for (int k = 0; k < length; k++) {
-            printf("%c", answer[k]);
+            if (answer[k] == '_') {
+                break;
+            } else if (k == length - 1) {
+                win = 1;
+            }
+        }
+
+        if (chances == 0) {
+            printf("You lost. The answer was \"%s\".\n\n\n\n\n", word);
+            break;
+        } else if (win == 1) {
+            printf("You won! Congratulations! Answer: %s\n\n\n\n\n", word);
+            break;
         }
 
         right = 0;
     }
+
 
     free(word);
 
