@@ -78,7 +78,7 @@ void drawGui(const char *answer, const char *guessed, int index, int chances) {
 
     printf("\n\n");
 
-    printf("Word: %s", answer);
+    printf("Word: %s ", answer);
 
     if (index > 0) {
         printf("Letters guessed: ");
@@ -164,6 +164,7 @@ int game() {
         }
 
         if (chances == 0) {
+            printf(" O\n/|\\\n/ \\\n");
             printf("You lost. The answer was \"%s\".\n\n\n\n\n", word);
             break;
         } else if (win == 1) {
